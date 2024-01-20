@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Topic API
-  version: 0.3.0
+  version: 0.4.0
 paths:
   /api/topic:
     get:
@@ -15,7 +15,26 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/TopicIdentifiers'
+  /api/topic/{id}:
+    get:
+      description: Return a Topic by ID
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Topic'
 components:
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/TopicIdentifiers/properties/Id'
   schemas:
     TopicIdentifiers:
       type: object
