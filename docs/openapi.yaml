@@ -1,27 +1,20 @@
 openapi: 3.0.3
 info:
   title: Topic API
-  version: 0.2.1
+  version: 0.3.0
 paths:
   /api/topic:
     get:
-      parameters:
-        - name: domain
-          in: query
-          required: true
-          schema:
-            type: string
-            items:
-              $ref: '#/components/schemas/Domain'
+      description: List all topics by Name and ID
       responses:
         '200':
-          description: List of all topics
+          description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Topic'
+                  $ref: '#/components/schemas/TopicIdentifiers'
 components:
   schemas:
     TopicIdentifiers:
