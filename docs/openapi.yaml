@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Topic API
-  version: 0.2.0
+  version: 0.2.1
 paths:
   /api/topic:
     get:
@@ -24,30 +24,39 @@ paths:
                   $ref: '#/components/schemas/Topic'
 components:
   schemas:
-    Topic:
+    TopicIdentifiers:
       type: object
       properties:
+        Id:
+          type: string
         Name:
           type: string
-        Domain:
-          type: string
-          items:
-            $ref: '#/components/schemas/Domain'
-        Skills:
-          type: array
-          items:
-            type: string
-        Status:
-          type: string
-          enum:
-            - Active
-            - Archived
-        Overview:
-          type: string
-        Resources:
-          type: array
-          items:
-            $ref: '#/components/schemas/Resource'
+    Topic:
+      required:
+        - Name
+      allOf:
+        - $ref: '#/components/schemas/TopicIdentifiers'
+        - type: object
+          properties:
+            Domain:
+              type: string
+              items:
+                $ref: '#/components/schemas/Domain'
+            Skills:
+              type: array
+              items:
+                type: string
+            Status:
+              type: string
+              enum:
+                - Active
+                - Archived
+            Overview:
+              type: string
+            Resources:
+              type: array
+              items:
+                $ref: '#/components/schemas/Resource'
     Resource:
       type: object
       properties:
