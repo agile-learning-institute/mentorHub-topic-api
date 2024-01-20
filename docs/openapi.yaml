@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Topic API
-  version: 0.4.0
+  version: 0.5.0
 paths:
   /api/topic:
     get:
@@ -15,6 +15,20 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/TopicIdentifiers'
+    post:
+      description: Create a new Topic
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Topic'
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Topic'
   /api/topic/{id}:
     get:
       description: Return a Topic by ID
