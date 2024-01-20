@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Topic API
-  version: 0.5.1
+  version: 0.6.0
 paths:
   /api/topic:
     get:
@@ -30,6 +30,19 @@ paths:
       description: Return a Topic by ID
       parameters:
         - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          $ref: '#/components/responses/Topic'
+  /api/topic/{id}/resource:
+    post:
+      description: Add a resource to a topic
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resource'
       responses:
         '200':
           $ref: '#/components/responses/Topic'
