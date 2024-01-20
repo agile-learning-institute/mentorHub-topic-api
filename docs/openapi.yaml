@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Topic API
-  version: 0.6.0
+  version: 0.7.0
 paths:
   /api/topic:
     get:
@@ -46,6 +46,15 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/Topic'
+  /api/topic/{id}/resource/{name}:
+    delete:
+      description: Remove a resource from a Topic
+      parameters:
+        - $ref: '#/components/parameters/Id'
+        - $ref: '#/components/parameters/Name'
+      responses:
+        '200':
+          description: OK
 components:
   responses:
     Topic:
@@ -61,6 +70,12 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/TopicIdentifiers/properties/Id'
+    Name:
+      name: name
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/TopicIdentifiers/properties/Name'
   schemas:
     TopicIdentifiers:
       type: object
