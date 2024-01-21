@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Topic API
-  version: 0.7.0
+  version: 0.8.0
 paths:
   /api/topic:
     get:
@@ -33,6 +33,13 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/Topic'
+    patch:
+      description: Update a Topic by ID
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          $ref: '#/components/responses/Topic'
   /api/topic/{id}/resource:
     post:
       description: Add a resource to a topic
@@ -46,6 +53,22 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/Topic'
+    patch:
+      description: Update a resource on a topic
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resource'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
   /api/topic/{id}/resource/{name}:
     delete:
       description: Remove a resource from a Topic
