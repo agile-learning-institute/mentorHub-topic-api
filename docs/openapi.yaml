@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Topic API
-  version: 0.10.0
+  version: 0.10.1
 paths:
   /api/topic:
     get:
@@ -111,6 +111,7 @@ components:
       properties:
         Id:
           type: string
+          readOnly: true
         Name:
           type: string
     Topic:
