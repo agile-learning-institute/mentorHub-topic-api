@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Topic API
-  version: 0.9.0
+  version: 0.10.0
 paths:
   /api/topic:
     get:
@@ -76,6 +76,11 @@ paths:
       parameters:
         - $ref: '#/components/parameters/Id'
         - $ref: '#/components/parameters/Name'
+      responses:
+        '200':
+          description: OK
+  /api/topic/healthy:
+    get:
       responses:
         '200':
           description: OK
