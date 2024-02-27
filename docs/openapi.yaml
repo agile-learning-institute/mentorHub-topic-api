@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Topic API
-  version: 0.13.0
+  version: 0.14.0
 paths:
   /api/topic:
     get:
@@ -126,21 +126,39 @@ components:
     TopicProperties:
       type: object
       properties:
-        Domain:
-          type: string
-          items:
-            $ref: '#/components/schemas/Domain'
-        Skills:
-          type: array
-          items:
-            type: string
         Status:
           type: string
           enum:
             - Active
             - Archived
-        Overview:
+        Description:
           type: string
+        Category:
+          type: string
+          enum:
+            - Foundations of ITSM
+            - Design and Development
+            - Infrastructure and Operations
+            - Networking and Security
+            - Development Tools and Practices
+            - Data Management
+            - Continuous Integration and Deployment
+            - Monitoring and Performance
+        Path:
+          type: string
+          enum:
+            - Odin
+            - EngineerKit
+            - SRE Speciality
+            - Data Specialty
+            - AWS Cloud Hosting
+            - Salesforce
+        Sequence:
+          type: string
+        Skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/Skill'
     TopicResources:
       properties:
         Resources:
@@ -159,57 +177,66 @@ components:
       properties:
         Name:
           type: string
-        Type:
+        Status:
           type: string
           enum:
-            - Article
-            - Book
-            - Certification Exam
-            - Course
-            - Design System
-            - Document
-            - Exercise
-            - EngineerKit Resource
-            - Film
-            - Game
-            - Guide
-            - Image
-            - Official Guide
-            - Official Training
-            - Resource
-            - Tool
-            - Thread
-            - Tutorial
-            - Video
-            - Video Series
-            - Website
-        Duration:
-          type: integer
+            - Active
+            - Archived
         Description:
           type: string
+        Duration:
+          type: integer
         Link:
           type: string
-        isFree:
-          type: boolean
-        isGeneralistSkill:
-          type: boolean
-        Notes:
+        Skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/Skill'
+        Tags:
+          type: array
+          items:
+            type: string
+            enum:
+              - $
+              - Article
+              - Book
+              - Exam
+              - Interactive
+              - Lecture
+              - Lesson
+              - Reference
+              - Tutorial
+              - User Guide
+              - Video
+              - UI/UX
+              - API
+              - Data
+              - SRE
+    Skill:
+      type: object
+      properties:
+        Name:
           type: string
-    Domain:
-      type: string
-      enum:
-        - Architecture
-        - Automated Testing
-        - Clean Code
-        - Computing
-        - Craftsmanship
-        - Data
-        - Human Experience
-        - Infrastructure
-        - Internet
-        - Monitoring
-        - Operations
-        - Product Life Cycle
-        - Programming Languages
-        - Security
-        - Tooling
+        Status:
+          type: string
+          enum:
+            - Active
+            - Archived
+        Description:
+          type: string
+        Mastery:
+          type: string
+          enum:
+            - Candidate
+            - Apprentice
+            - Resident
+            - Master
+            - Distinguished
+        Speciality:
+          type: string
+          enum:
+            - Generalist
+            - UI/UX Engineer
+            - API Engineer
+            - Data Engineer
+            - SRE Engineer
