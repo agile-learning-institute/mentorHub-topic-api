@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Topic API
-  version: 0.12.0
+  version: 0.13.0
 paths:
   /api/topic:
     get:
@@ -79,7 +79,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Resource'
+                $ref: '#/components/schemas/Topic'
     delete:
       description: Remove a resource from a Topic
       parameters:
