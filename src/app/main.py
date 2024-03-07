@@ -11,6 +11,3 @@ app.add_url_rule("/api/topic/<id>/resource", methods=["POST"], view_func=hello_w
 app.add_url_rule("/api/topic/<id>/resource/<name>", methods=["PATCH","DELETE"], view_func=hello_world)
 app.add_url_rule("/api/health", methods=["GET"], view_func=hello_world)
 app.add_url_rule("/api/config", methods=["GET"], view_func=hello_world)
-
-if __name__ == '__main__':
-    app.run(host='::', port='8086')
