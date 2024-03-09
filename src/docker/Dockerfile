@@ -6,7 +6,7 @@ RUN python -m venv --copies .venv && \
     .venv/bin/pip install -r requirements.txt && \
     .venv/bin/pyinstaller --name main app/wsgi.py
 
-FROM python:3.12.2-bookworm AS deploy
+FROM debian:12.5 AS deploy
 
 COPY --from=base /dist /opt
 
