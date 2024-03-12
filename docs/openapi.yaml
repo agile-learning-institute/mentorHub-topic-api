@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Topic API
-  version: 0.17.0
+  version: 0.18.0
 paths:
   /api/topic:
     get:
@@ -88,7 +88,7 @@ paths:
       responses:
         '200':
           description: OK
-  /api/topic/healthy:
+  /api/health:
     get:
       responses:
         '200':
@@ -269,3 +269,26 @@ components:
               Version:
                 description: Schema Version for the collection
                 type: string
+              Filter:
+                description: special Filter applied to collection
+                type: string
+        ConfigItems:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                description: Conf Item Name (Env Var Name, File Name)
+                type: string
+              value:
+                description: The value for that config item
+                type: string
+              from:
+                description: Where the value was found
+                type: string
+                enum:
+                  - default
+                  - environment
+                  - file
+        enums:
+          type: object
