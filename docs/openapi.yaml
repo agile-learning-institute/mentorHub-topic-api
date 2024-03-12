@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Topic API
-  version: 0.15.0
+  version: 0.16.0
 paths:
   /api/topic:
     get:
@@ -21,9 +21,7 @@ paths:
         content:
           application/json:
             schema:
-              allOf:
-                - $ref: '#/components/schemas/TopicIdentifiers'
-                - $ref: '#/components/schemas/TopicProperties'
+              $ref: '#/components/schemas/Topic'
       responses:
         '201':
           $ref: '#/components/responses/Topic'
