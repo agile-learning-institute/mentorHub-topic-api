@@ -134,6 +134,7 @@ components:
           type: string
     TopicProperties:
       type: object
+      description: Conforms to Topics Schema version 2.0.2
       properties:
         Status:
           type: string
@@ -183,6 +184,7 @@ components:
         - $ref: '#/components/schemas/TopicResources'
     Resource:
       type: object
+      description: Conforms to Resources Schema version 1.0.2
       properties:
         Name:
           type: string
@@ -223,6 +225,7 @@ components:
               - SRE
     Skill:
       type: object
+      description: Conforms to Skills Schema version 1.0.2
       properties:
         Name:
           type: string
