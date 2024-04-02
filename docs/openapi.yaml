@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Topic API
-  version: 1.0.0
+  version: 2.0.0
 paths:
   /api/topic:
     get:
@@ -134,7 +134,7 @@ components:
           type: string
     TopicProperties:
       type: object
-      description: Conforms to Topics Schema version 2.0.2
+      description: Conforms to Topics Schema version 2.0.3
       properties:
         Status:
           type: string
@@ -154,17 +154,6 @@ components:
             - Data Management
             - Continuous Integration and Deployment
             - Monitoring and Performance
-        Path:
-          type: string
-          enum:
-            - Odin
-            - EngineerKit
-            - SRE Speciality
-            - Data Specialty
-            - AWS Cloud Hosting
-            - Salesforce
-        Sequence:
-          type: string
         Skills:
           type: array
           items:
