@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Topic API
-  version: 2.0.1
+  version: 3.0.0
 paths:
   /api/topic:
     get:
@@ -88,6 +88,32 @@ paths:
       responses:
         '200':
           description: OK
+  /api/path/{pathname}:
+    get:
+      parameters:
+        - $ref: '#/components/parameters/PathName'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Path'
+    patch:
+      parameters:
+        - $ref: '#/components/parameters/PathName'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Path'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Path'
   /api/health:
     get:
       responses:
@@ -123,6 +149,12 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/TopicIdentifiers/properties/Name'
+    PathName:
+      name: pathname
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/Path/properties/Name'
   schemas:
     TopicIdentifiers:
       type: object
@@ -250,6 +282,30 @@ components:
             - API Engineer
             - Data Engineer
             - SRE Engineer
+    Path:
+      type: object
+      description: Conforms to Path Schema 1.0.0
+      properties:
+        Status:
+          type: string
+          enum:
+            - Active
+            - Archived
+        Name:
+          type: string
+          maxLength: 64
+        Segments:
+          type: array
+          items:
+            type: object
+            properties:
+              Name:
+                type: string
+                maxLength: 64
+              Topics:
+                type: array
+                items:
+                  type: string
     Config:
       type: object
       properties:
