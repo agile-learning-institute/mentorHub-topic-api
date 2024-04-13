@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Topic API
-  version: 2.0.0
+  version: 2.0.1
 paths:
   /api/topic:
     get:
@@ -132,6 +132,7 @@ components:
           readOnly: true
         Name:
           type: string
+          maxLength: 128
     TopicProperties:
       type: object
       description: Conforms to Topics Schema version 2.0.3
@@ -143,6 +144,7 @@ components:
             - Archived
         Description:
           type: string
+          maxLength: 512
         Category:
           type: string
           enum:
@@ -177,6 +179,7 @@ components:
       properties:
         Name:
           type: string
+          maxLength: 64
         Status:
           type: string
           enum:
@@ -184,10 +187,14 @@ components:
             - Archived
         Description:
           type: string
+          maxLength: 512
         Duration:
           type: integer
+          minimum: 1
+          maximum: 2880
         Link:
           type: string
+          maxLength: 256
         Skills:
           type: array
           items:
@@ -218,6 +225,7 @@ components:
       properties:
         Name:
           type: string
+          maxLength: 32
         Status:
           type: string
           enum:
@@ -225,6 +233,7 @@ components:
             - Archived
         Description:
           type: string
+          maxLength: 256
         Mastery:
           type: string
           enum:
