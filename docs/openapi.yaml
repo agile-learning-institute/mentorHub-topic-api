@@ -25,18 +25,18 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/Topic'
-  /api/topic/{id}:
+  /api/topic/{topicid}:
     get:
       description: Return a Topic by ID
       parameters:
-        - $ref: '#/components/parameters/Id'
+        - $ref: '#/components/parameters/TopicId'
       responses:
         '200':
           $ref: '#/components/responses/Topic'
     patch:
       description: Update a Topic by ID
       parameters:
-        - $ref: '#/components/parameters/Id'
+        - $ref: '#/components/parameters/TopicId'
       requestBody:
         content:
           application/json:
@@ -47,11 +47,11 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/Topic'
-  /api/topic/{id}/resource:
+  /api/topic/{topicid}/resource:
     post:
       description: Add a resource to a topic
       parameters:
-        - $ref: '#/components/parameters/Id'
+        - $ref: '#/components/parameters/TopicId'
       requestBody:
         content:
           application/json:
@@ -62,12 +62,12 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/Topic'
-  /api/topic/{id}/resource/{name}:
+  /api/topic/{topicid}/resource/{resourceid}:
     patch:
       description: Update a resource on a topic
       parameters:
-        - $ref: '#/components/parameters/Id'
-        - $ref: '#/components/parameters/Name'
+        - $ref: '#/components/parameters/TopicId'
+        - $ref: '#/components/parameters/ResourceId'
       requestBody:
         content:
           application/json:
@@ -83,15 +83,15 @@ paths:
     delete:
       description: Remove a resource from a Topic
       parameters:
-        - $ref: '#/components/parameters/Id'
-        - $ref: '#/components/parameters/Name'
+        - $ref: '#/components/parameters/TopicId'
+        - $ref: '#/components/parameters/ResourceId'
       responses:
         '200':
           description: OK
-  /api/path/{pathname}:
+  /api/path/{pathid}:
     get:
       parameters:
-        - $ref: '#/components/parameters/PathName'
+        - $ref: '#/components/parameters/PathId'
       responses:
         '200':
           description: OK
@@ -101,7 +101,7 @@ paths:
                 $ref: '#/components/schemas/Path'
     patch:
       parameters:
-        - $ref: '#/components/parameters/PathName'
+        - $ref: '#/components/parameters/PathId'
       requestBody:
         content:
           application/json:
@@ -137,24 +137,24 @@ components:
           schema:
             $ref: '#/components/schemas/Topic'
   parameters:
-    Id:
-      name: id
+    TopicId:
+      name: topicid
       in: path
       required: true
       schema:
         $ref: '#/components/schemas/TopicIdentifiers/properties/_id'
-    Name:
-      name: name
+    ResourceId:
+      name: resourceid
       in: path
       required: true
       schema:
-        $ref: '#/components/schemas/TopicIdentifiers/properties/name'
-    PathName:
-      name: pathname
+        $ref: '#/components/schemas/Resource/properties/_id'
+    PathId:
+      name: pathid
       in: path
       required: true
       schema:
-        $ref: '#/components/schemas/Path/properties/name'
+        $ref: '#/components/schemas/Path/properties/_id'
   schemas:
     TopicIdentifiers:
       type: object
@@ -209,6 +209,9 @@ components:
       type: object
       description: Conforms to Resources Schema version 1.0.2
       properties:
+        _id:
+          type: string
+          readOnly: true
         name:
           type: string
           maxLength: 64
@@ -287,6 +290,9 @@ components:
       type: object
       description: Conforms to Path Schema 1.0.0
       properties:
+        _id:
+          type: string
+          readOnly: true
         status:
           type: string
           enum:
