@@ -99,6 +99,20 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/PathIdentifiers'
+    post:
+      description: Create a new Path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Path'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Path'
   /api/path/{pathid}:
     get:
       parameters:
