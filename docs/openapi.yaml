@@ -88,6 +88,17 @@ paths:
       responses:
         '200':
           description: OK
+  /api/path:
+    get:
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PathIdentifiers'
   /api/path/{pathid}:
     get:
       parameters:
@@ -154,7 +165,7 @@ components:
       in: path
       required: true
       schema:
-        $ref: '#/components/schemas/Path/properties/_id'
+        $ref: '#/components/schemas/PathIdentifiers/properties/_id'
   schemas:
     TopicIdentifiers:
       type: object
@@ -287,20 +298,29 @@ components:
             - Data Engineer
             - SRE Engineer
     Path:
+      required:
+        - name
+      allOf:
+        - $ref: '#/components/schemas/PathIdentifiers'
+        - $ref: '#/components/schemas/PathProperties'
+    PathIdentifiers:
       type: object
-      description: Conforms to Path Schema 1.0.0
       properties:
         _id:
           type: string
           readOnly: true
+        name:
+          type: string
+          maxLength: 64
+    PathProperties:
+      type: object
+      description: Conforms to Path Schema 1.0.0
+      properties:
         status:
           type: string
           enum:
             - Active
             - Archived
-        name:
-          type: string
-          maxLength: 64
         segments:
           type: array
           items:
