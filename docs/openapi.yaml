@@ -200,7 +200,7 @@ components:
             $ref: '#/components/schemas/Resource'
     Topic:
       required:
-        - Name
+        - name
       allOf:
         - $ref: '#/components/schemas/TopicIdentifiers'
         - $ref: '#/components/schemas/TopicProperties'
