@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Topic API
-  version: 1.0.0
+  version: 3.0.1
 paths:
   /api/topic:
     get:
@@ -25,18 +25,18 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/Topic'
-  /api/topic/{id}:
+  /api/topic/{topicid}:
     get:
       description: Return a Topic by ID
       parameters:
-        - $ref: '#/components/parameters/Id'
+        - $ref: '#/components/parameters/TopicId'
       responses:
         '200':
           $ref: '#/components/responses/Topic'
     patch:
       description: Update a Topic by ID
       parameters:
-        - $ref: '#/components/parameters/Id'
+        - $ref: '#/components/parameters/TopicId'
       requestBody:
         content:
           application/json:
@@ -47,11 +47,11 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/Topic'
-  /api/topic/{id}/resource:
+  /api/topic/{topicid}/resource:
     post:
       description: Add a resource to a topic
       parameters:
-        - $ref: '#/components/parameters/Id'
+        - $ref: '#/components/parameters/TopicId'
       requestBody:
         content:
           application/json:
@@ -62,12 +62,12 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/Topic'
-  /api/topic/{id}/resource/{name}:
+  /api/topic/{topicid}/resource/{resourceid}:
     patch:
       description: Update a resource on a topic
       parameters:
-        - $ref: '#/components/parameters/Id'
-        - $ref: '#/components/parameters/Name'
+        - $ref: '#/components/parameters/TopicId'
+        - $ref: '#/components/parameters/ResourceId'
       requestBody:
         content:
           application/json:
@@ -83,11 +83,62 @@ paths:
     delete:
       description: Remove a resource from a Topic
       parameters:
-        - $ref: '#/components/parameters/Id'
-        - $ref: '#/components/parameters/Name'
+        - $ref: '#/components/parameters/TopicId'
+        - $ref: '#/components/parameters/ResourceId'
       responses:
         '200':
           description: OK
+  /api/path:
+    get:
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PathIdentifiers'
+    post:
+      description: Create a new Path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Path'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Path'
+  /api/path/{pathid}:
+    get:
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Path'
+    patch:
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Path'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Path'
   /api/health:
     get:
       responses:
@@ -111,39 +162,47 @@ components:
           schema:
             $ref: '#/components/schemas/Topic'
   parameters:
-    Id:
-      name: id
+    TopicId:
+      name: topicid
       in: path
       required: true
       schema:
-        $ref: '#/components/schemas/TopicIdentifiers/properties/Id'
-    Name:
-      name: name
+        $ref: '#/components/schemas/TopicIdentifiers/properties/_id'
+    ResourceId:
+      name: resourceid
       in: path
       required: true
       schema:
-        $ref: '#/components/schemas/TopicIdentifiers/properties/Name'
+        $ref: '#/components/schemas/Resource/properties/_id'
+    PathId:
+      name: pathid
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/PathIdentifiers/properties/_id'
   schemas:
     TopicIdentifiers:
       type: object
       properties:
-        Id:
+        _id:
           type: string
           readOnly: true
-        Name:
+        name:
           type: string
+          maxLength: 128
     TopicProperties:
       type: object
-      description: Conforms to Topics Schema version 2.0.2
+      description: Conforms to Topics Schema version 2.0.3
       properties:
-        Status:
+        status:
           type: string
           enum:
             - Active
             - Archived
-        Description:
+        description:
           type: string
-        Category:
+          maxLength: 512
+        category:
           type: string
           enum:
             - Foundations of ITSM
@@ -154,30 +213,19 @@ components:
             - Data Management
             - Continuous Integration and Deployment
             - Monitoring and Performance
-        Path:
-          type: string
-          enum:
-            - Odin
-            - EngineerKit
-            - SRE Speciality
-            - Data Specialty
-            - AWS Cloud Hosting
-            - Salesforce
-        Sequence:
-          type: string
-        Skills:
+        skills:
           type: array
           items:
             $ref: '#/components/schemas/Skill'
     TopicResources:
       properties:
-        Resources:
+        resources:
           type: array
           items:
             $ref: '#/components/schemas/Resource'
     Topic:
       required:
-        - Name
+        - name
       allOf:
         - $ref: '#/components/schemas/TopicIdentifiers'
         - $ref: '#/components/schemas/TopicProperties'
@@ -186,24 +234,33 @@ components:
       type: object
       description: Conforms to Resources Schema version 1.0.2
       properties:
-        Name:
+        _id:
           type: string
-        Status:
+          readOnly: true
+        name:
+          type: string
+          maxLength: 64
+        status:
           type: string
           enum:
             - Active
             - Archived
-        Description:
+        description:
           type: string
-        Duration:
+          maxLength: 512
+        duration:
           type: integer
-        Link:
+          minimum: 1
+          maximum: 2880
+        link:
           type: string
-        Skills:
+          maxLength: 256
+          pattern: ^https:\/\/([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z-]{2,24}(:[0-9]{1,5})?(\/(([\w\-\.~]|%[a-fA-F0-9]{2}|[!\$&'\(\)\*\+,;=:@])*\/?)*)?
+        skills:
           type: array
           items:
             $ref: '#/components/schemas/Skill'
-        Tags:
+        tags:
           type: array
           items:
             type: string
@@ -227,16 +284,18 @@ components:
       type: object
       description: Conforms to Skills Schema version 1.0.2
       properties:
-        Name:
+        name:
           type: string
-        Status:
+          maxLength: 32
+        status:
           type: string
           enum:
             - Active
             - Archived
-        Description:
+        description:
           type: string
-        Mastery:
+          maxLength: 256
+        mastery:
           type: string
           enum:
             - Candidate
@@ -244,7 +303,7 @@ components:
             - Resident
             - Master
             - Distinguished
-        Speciality:
+        speciality:
           type: string
           enum:
             - Generalist
@@ -252,6 +311,42 @@ components:
             - API Engineer
             - Data Engineer
             - SRE Engineer
+    Path:
+      required:
+        - name
+      allOf:
+        - $ref: '#/components/schemas/PathIdentifiers'
+        - $ref: '#/components/schemas/PathProperties'
+    PathIdentifiers:
+      type: object
+      properties:
+        _id:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          maxLength: 64
+    PathProperties:
+      type: object
+      description: Conforms to Path Schema 1.0.0
+      properties:
+        status:
+          type: string
+          enum:
+            - Active
+            - Archived
+        segments:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                maxLength: 64
+              topics:
+                type: array
+                items:
+                  type: string
     Config:
       type: object
       properties:
