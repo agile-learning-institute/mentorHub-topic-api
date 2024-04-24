@@ -1,3 +1,5 @@
+const path = require('node:path')
+
 db = connect('mongodb://root:example@localhost:27017/mentorHub?authSource=admin');
 
 const data = new Map();
@@ -10,4 +12,4 @@ data.set('path_identifiers', db.paths.find({}, { 'name': 1, '_id': 1 }).toArray(
 
 data.set('path', db.paths.aggregate({ $match: { 'name': 'The Odin Project' } }, { $lookup: { from: 'topics', localField: 'segments.topics', foreignField: '_id', as: 'topics' } }, { $set: { segments: { $map: { input: '$segments', as: 'segment', in: { name: '$$segment.name', topics: { $filter: { input: '$topics', as: 'topic', cond: { $in: [ '$$topic._id', '$$segment.topics' ] } } } } } } } }, { $addFields: { 'segments.topics': '$topics.name' } }, { $project: { 'topics': 0 } }).toArray());
 
-fs.writeFileSync('/tmp/data.json', JSON.stringify(Object.fromEntries(data)));
+fs.writeFileSync(path.join(__dirname, 'app/data.json'), JSON.stringify(Object.fromEntries(data)));
