@@ -1,0 +1,13 @@
+db = connect('mongodb://root:example@localhost:27017/mentorHub?authSource=admin');
+
+const data = new Map();
+
+data.set('topic_identifiers', db.topics.find({}, { 'name': 1, '_id': 1 }).toArray());
+
+data.set('topic', db.topics.aggregate({ $match: { 'name': 'History of Computing' } }, { $lookup: { from: 'resources', localField: 'resources', foreignField: '_id', as: 'resources' } }, { $lookup: { from: 'skills', localField: 'skills', foreignField: '_id', as: 'skills' } }, { $lookup: { from: 'skills', localField: 'resources.skills', foreignField: '_id', as: 'resources_skills' } }, { $set: { resources: { $map: { input: '$resources', as: 'resource', in: { _id: '$$resource._id', name: '$$resource.name', status: '$$resource.status', description: '$$resource.description', duration: '$$resource.duration', link: '$$resource.link', skills: { $filter: { input: '$resource_skills', as: 'skill', cond: { $in: [ '$$skill._id', '$$resource.skills' ] } } } } } } } }, { $addFields: { 'resources.skills': '$resource_skills' } }, { $project: { 'lastSaved': 0, 'resources_skills': 0, 'skills.lastSaved': 0, 'skills._id': 0 } }).toArray());
+
+data.set('path_identifiers', db.paths.find({}, { 'name': 1, '_id': 1 }).toArray());
+
+data.set('path', db.paths.aggregate({ $match: { 'name': 'The Odin Project' } }, { $lookup: { from: 'topics', localField: 'segments.topics', foreignField: '_id', as: 'topics' } }, { $set: { segments: { $map: { input: '$segments', as: 'segment', in: { name: '$$segment.name', topics: { $filter: { input: '$topics', as: 'topic', cond: { $in: [ '$$topic._id', '$$segment.topics' ] } } } } } } } }, { $addFields: { 'segments.topics': '$topics.name' } }, { $project: { 'topics': 0 } }).toArray());
+
+fs.writeFileSync('/tmp/data.json', JSON.stringify(Object.fromEntries(data)));
