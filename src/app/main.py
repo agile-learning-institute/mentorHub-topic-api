@@ -1,15 +1,44 @@
 from flask import Flask
+import json
 
 app = Flask(__name__)
 
 def hello_world(**kwargs):
     return "Hello, World!"
 
-app.add_url_rule("/api/topic", methods=["GET","POST"], view_func=hello_world)
-app.add_url_rule("/api/topic/<topicid>", methods=["GET","PATCH"], view_func=hello_world)
-app.add_url_rule("/api/topic/<topicid>/resource", methods=["POST"], view_func=hello_world)
-app.add_url_rule("/api/topic/<topicid>/resource/<resourceid>", methods=["PATCH","DELETE"], view_func=hello_world)
-app.add_url_rule("/api/path", methods=["GET","POST"], view_func=hello_world)
-app.add_url_rule("/api/path/<pathid>", methods=["PATCH"], view_func=hello_world)
+def response(object):
+    with open('/opt/main/_internal/data.json', 'r') as inf:
+
+        data = json.load(inf)
+
+        return json.dumps(data[object])
+
+
+@app.route("/api/topic", methods=["GET","POST"])
+def return_topic_identifiers():
+    output = response('topic_identifiers')
+
+    return output
+
+@app.route("/api/topic/<topicid>", methods=["GET","PATCH"])
+@app.route("/api/topic/<topicid>/resource", methods=["POST"])
+@app.route("/api/topic/<topicid>/resource/<resourceid>", methods=["PATCH","DELETE"])
+def return_topic(**kwargs):
+    output = response('topic')
+
+    return output
+
+@app.route("/api/path", methods=["GET","POST"])
+def return_path_identifiers():
+    output = response('path_identifiers')
+
+    return output
+
+@app.route("/api/path/<pathid>", methods=["PATCH"])
+def return_path(**kwargs):
+    output = response('path')
+
+    return output
+
 app.add_url_rule("/api/health", methods=["GET"], view_func=hello_world)
 app.add_url_rule("/api/config", methods=["GET"], view_func=hello_world)
