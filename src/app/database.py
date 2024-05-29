@@ -2,8 +2,8 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 from bson.json_util import dumps
 
-def makeDatabaseConnection():
-    client = MongoClient("mongodb://root:example@mentorhub-mongodb:27017/?tls=false&directConnection=true")
+def makeDatabaseConnection(connection_string):
+    client = MongoClient(connection_string)
 
     return client.mentorHub
 

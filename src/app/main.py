@@ -1,9 +1,10 @@
 from flask import Flask
 from database import *
+import os
 
 app = Flask(__name__)
 
-db = makeDatabaseConnection()
+db = makeDatabaseConnection(os.getenv('CONNECTION_STRING', 'mongodb://root:example@mentorhub-mongodb:27017/?tls=false&directConnection=true'))
 
 def hello_world(**kwargs):
     return "Hello, World!"
