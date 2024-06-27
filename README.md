@@ -1,32 +1,88 @@
-># Search ALL files for "TODO:" and address task
+# mentorHub-topic-api
 
-# <<TODO:domain>>-<<TODO:component>>
+This project is part of mentorHub, an education platform for software development developed by the Agile Learning Institute.
 
-This is repository contains <<TODO:service-description>>
+This repository hosts the Topics API microservice. The API manages the following resources:
 
-[Here](https://github.com/orgs/agile-learning-institute/repositories?q=mentorhub-&type=all&sort=name) are all of the repositories in the [mentorHub](https://github.com/agile-learning-institute/mentorhub/tree/main) system
+Topics, Resources, Skills, and Paths.
 
-## Prerequisites
+These and others are described in more detail on the [database repository](https://github.com/agile-learning-institute/mentorHub-mongodb#collections)
 
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-- TODO: Additional Prerequisites
+For an overview of the available endpoints and responses, see [The OpenAPI Spec](docs/openapi.yaml)
 
-## Contributing
+# To build the tool
 
-Instructions on how to contribute, how to install dependencies and run locally. Including how to run backing services locally.
+Create the venv and install dependencies
 
-## Build and test the container
-
-Use the following command to build and run the container locally. See [here for details](https://github.com/agile-learning-institute/mentorhub/blob/main/docker-compose/README.md) on how to stop/start the database.
-
-```bash
-../src/docker/docker-build.sh
+```
+python -m venv .venv && ./.venv/bin/pip install -r requirements.txt
 ```
 
-After that command completes successfully you can verify it worked successfully by
+Activate the venv
 
-- TODO: Describe functional baseline tests
+```
+source ./.venv/bin/activate
+```
 
-## Refactors and Enhancements
+Build the tool
 
-- [ ] To Be Documented
+```
+python -m build
+```
+
+Install it
+
+```
+pip install dist/*.whl
+```
+
+# Run it
+
+Building the container
+
+```
+api build
+```
+
+Start the container
+
+```
+api container
+```
+
+Test the container
+
+```
+api blackbox
+```
+
+Run the code locally
+
+```
+api start
+```
+
+Test the code locally
+
+```
+api stepci
+```
+
+# Testing with cURL
+
+```
+curl localhost:8086/api/topic
+```
+
+```
+curl localhost:8086/api/topic/aaaa00000000000000000002
+```
+
+```
+curl localhost:8086/api/path
+```
+
+```
+curl localhost:8086/api/path/999900000000000000000000
+```
+
