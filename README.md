@@ -10,33 +10,44 @@ These and others are described in more detail on the [database repository](https
 
 For an overview of the available endpoints and responses, see [The OpenAPI Spec](docs/openapi.yaml)
 
-# To build the tool
+# Build the dev tools
 
-Create the venv and install dependencies
+1. Create the venv and install dependencies
 
 ```
 python -m venv .venv && ./.venv/bin/pip install -r requirements.txt
 ```
 
-Activate the venv
+1. Activate the venv
 
 ```
 source ./.venv/bin/activate
 ```
 
-Build the tool
+1. Build and install the tool
+
+Note: This step is optional, instructions for running the dev tools if this step is skipped are included below
 
 ```
 python -m build
-```
-
-Install it
-
-```
 pip install dist/*.whl
 ```
 
-# Run it
+# Run the dev tools
+
+If you have built and installed the dev tools as directed above, the command `api` will be present in your path when you activate the venv. Otherwise, you may run the script from the virtual environment like so
+
+```
+python src/apt/scripts/api.py
+```
+
+You can also run it without activating the venv
+
+```
+./.venv/bin/python src/apt/scripts/api.py
+```
+
+## Commands
 
 Building the container
 
