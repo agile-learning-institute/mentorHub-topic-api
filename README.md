@@ -81,18 +81,22 @@ api stepci
 
 # Testing with cURL
 
+Get a list of topics
 ```
 curl localhost:8086/api/topic
 ```
 
+Get a topic by id
 ```
 curl localhost:8086/api/topic/aaaa00000000000000000002
 ```
 
+Get a list of paths
 ```
 curl localhost:8086/api/path
 ```
 
+Get a path by id
 ```
 curl localhost:8086/api/path/999900000000000000000000
 ```
