@@ -1,32 +1,103 @@
-># Search ALL files for "TODO:" and address task
+# mentorHub-topic-api
 
-# <<TODO:domain>>-<<TODO:component>>
+This project is part of mentorHub, an education platform for software development developed by the Agile Learning Institute.
 
-This is repository contains <<TODO:service-description>>
+This repository hosts the Topics API microservice. The API manages the following resources:
 
-[Here](https://github.com/orgs/agile-learning-institute/repositories?q=mentorhub-&type=all&sort=name) are all of the repositories in the [mentorHub](https://github.com/agile-learning-institute/mentorhub/tree/main) system
+Topics, Resources, Skills, and Paths.
 
-## Prerequisites
+These and others are described in more detail on the [database repository](https://github.com/agile-learning-institute/mentorHub-mongodb#collections)
 
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-- TODO: Additional Prerequisites
+For an overview of the available endpoints and responses, see [The OpenAPI Spec](docs/openapi.yaml)
 
-## Contributing
+# Build the dev tools
 
-Instructions on how to contribute, how to install dependencies and run locally. Including how to run backing services locally.
+1. Create the venv and install dependencies
 
-## Build and test the container
+    ```
+    python -m venv .venv && ./.venv/bin/pip install -r requirements.txt
+    ```
 
-Use the following command to build and run the container locally. See [here for details](https://github.com/agile-learning-institute/mentorhub/blob/main/docker-compose/README.md) on how to stop/start the database.
+1. Activate the venv
 
-```bash
-../src/docker/docker-build.sh
+    ```
+    source ./.venv/bin/activate
+    ```
+
+1. Build and install the tool
+
+    Note: This step is optional, instructions for running the dev tools if this step is skipped are included below
+
+    ```
+    python -m build && pip install dist/*.whl
+    ```
+
+
+# Run the dev tools
+
+If you have built and installed the dev tools as directed above, the command `api` will be present in your path when you activate the venv. Otherwise, you may run the script from the virtual environment like so
+
+```
+python src/apt/scripts/api.py
 ```
 
-After that command completes successfully you can verify it worked successfully by
+You can also run it without activating the venv
 
-- TODO: Describe functional baseline tests
+```
+./.venv/bin/python src/apt/scripts/api.py
+```
 
-## Refactors and Enhancements
+## Commands
 
-- [ ] To Be Documented
+Building the container
+
+```
+api build
+```
+
+Start the container
+
+```
+api container
+```
+
+Test the container
+
+```
+api blackbox
+```
+
+Run the code locally
+
+```
+api start
+```
+
+Test the code locally
+
+```
+api stepci
+```
+
+# Testing with cURL
+
+Get a list of topics
+```
+curl localhost:8086/api/topic
+```
+
+Get a topic by id
+```
+curl localhost:8086/api/topic/aaaa00000000000000000002
+```
+
+Get a list of paths
+```
+curl localhost:8086/api/path
+```
+
+Get a path by id
+```
+curl localhost:8086/api/path/999900000000000000000000
+```
+

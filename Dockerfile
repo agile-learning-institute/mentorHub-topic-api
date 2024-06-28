@@ -11,4 +11,4 @@ FROM debian:12.5 AS deploy
 COPY --from=base /dist /opt
 
 EXPOSE 8086
-CMD ["/opt/main/main"]
+ENTRYPOINT ["/opt/main/main"]
