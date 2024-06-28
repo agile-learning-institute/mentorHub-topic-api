@@ -14,24 +14,24 @@ For an overview of the available endpoints and responses, see [The OpenAPI Spec]
 
 1. Create the venv and install dependencies
 
-```
-python -m venv .venv && ./.venv/bin/pip install -r requirements.txt
-```
+    ```
+    python -m venv .venv && ./.venv/bin/pip install -r requirements.txt
+    ```
 
 1. Activate the venv
 
-```
-source ./.venv/bin/activate
-```
+    ```
+    source ./.venv/bin/activate
+    ```
 
 1. Build and install the tool
 
-Note: This step is optional, instructions for running the dev tools if this step is skipped are included below
+    Note: This step is optional, instructions for running the dev tools if this step is skipped are included below
 
-```
-python -m build
-pip install dist/*.whl
-```
+    ```
+    python -m build && pip install dist/*.whl
+    ```
+
 
 # Run the dev tools
 
