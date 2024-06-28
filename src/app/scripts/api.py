@@ -8,7 +8,7 @@ commands = {
         'blackbox': 'docker run --rm --network mentorhub_default -e STEPCI_DISABLE_ANALYTICS=1 -v "$PWD"/test:/tests --mount "type=bind,src=$PWD/docs,dst=/docs" ghcr.io/stepci/stepci tests/topic.stepci.yaml',
         'build': 'docker build --rm --tag ghcr.io/agile-learning-institute/mentorhub-topic-api:latest .',
         'start': "CONNECTION_STRING='mongodb://root:example@localhost:27017/?tls=false&directConnection=true' ./.venv/bin/python3 src/app/wsgi.py",
-        'stepci': 'docker run --rm --network bridge -e STEPCI_DISABLE_ANALYTICS=1 -v "$PWD"/test:/tests --mount "type=bind,src=$PWD/docs,dst=/docs" ghcr.io/stepci/stepci tests/topic.stepci.yaml'
+        'stepci': 'docker run --rm --network bridge -e STEPCI_DISABLE_ANALYTICS=1 -v "$PWD"/test:/tests --mount "type=bind,src=$PWD/docs,dst=/docs" ghcr.io/stepci/stepci tests/topic.stepci.yaml -e host="$(hostname)"'
 }
 
 
