@@ -9,7 +9,7 @@ db = make_database_connection(os.getenv('CONNECTION_STRING', 'mongodb://root:exa
 def hello_world(**kwargs):
     return "Hello, World!"
 
-@app.route("/api/topic", methods=["GET"])
+@app.get("/api/topic")
 def get_topics():
     response = app.make_response(find_topics(db))
 
@@ -17,7 +17,7 @@ def get_topics():
 
     return response
 
-@app.route("/api/topic", methods=["POST"])
+@app.post("/api/topic")
 def post_topic():
     response = app.make_response(insert_topic(db, request.data))
 
@@ -25,7 +25,7 @@ def post_topic():
 
     return response
 
-@app.route("/api/topic/<topicid>", methods=["GET"])
+@app.get("/api/topic/<topicid>")
 def get_topic_by_id(topicid):
     response = app.make_response(find_topic_by_id(db, topicid))
 
@@ -33,7 +33,7 @@ def get_topic_by_id(topicid):
 
     return response
 
-@app.route("/api/path", methods=["GET"])
+@app.get("/api/path")
 def get_paths():
     response = app.make_response(find_paths(db))
 
@@ -41,7 +41,7 @@ def get_paths():
 
     return response
 
-@app.route("/api/path/<pathid>", methods=["GET"])
+@app.get("/api/path/<pathid>")
 def get_path_by_id(pathid):
     response = app.make_response(find_path_by_id(db, pathid))
 
