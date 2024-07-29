@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from database import *
 import os
 
@@ -12,6 +12,14 @@ def hello_world(**kwargs):
 @app.route("/api/topic", methods=["GET"])
 def return_topic_identifiers():
     response = app.make_response(getTopicList(db))
+
+    response.content_type = 'application/json'
+
+    return response
+
+@app.route("/api/topic", methods=["POST"])
+def post_topic():
+    response = app.make_response(postTopic(db, request.data))
 
     response.content_type = 'application/json'
 
@@ -41,7 +49,6 @@ def return_path(pathid):
 
     return response
 
-app.add_url_rule("/api/topic", methods=["POST"], view_func=hello_world)
 app.add_url_rule("/api/topic/<topicid>", methods=["PATCH"], view_func=hello_world)
 app.add_url_rule("/api/topic/<topicid>/resource", methods=["POST"], view_func=hello_world)
 app.add_url_rule("/api/topic/<topicid>/resource/<resourceid>", methods=["PATCH","DELETE"], view_func=hello_world)
