@@ -9,7 +9,7 @@ db = makeDatabaseConnection(os.getenv('CONNECTION_STRING', 'mongodb://root:examp
 def hello_world(**kwargs):
     return "Hello, World!"
 
-@app.route("/api/topic", methods=["GET"])
+@app.get("/api/topic")
 def return_topic_identifiers():
     response = app.make_response(getTopicList(db))
 
@@ -17,7 +17,7 @@ def return_topic_identifiers():
 
     return response
 
-@app.route("/api/topic", methods=["POST"])
+@app.post("/api/topic")
 def post_topic():
     response = app.make_response(postTopic(db, request.data))
 
@@ -25,7 +25,7 @@ def post_topic():
 
     return response
 
-@app.route("/api/topic/<topicid>", methods=["GET"])
+@app.get("/api/topic/<topicid>")
 def return_topic(topicid):
     response = app.make_response(getTopicById(db, topicid))
 
@@ -33,7 +33,7 @@ def return_topic(topicid):
 
     return response
 
-@app.route("/api/path", methods=["GET"])
+@app.get("/api/path")
 def return_path_identifiers():
     response = app.make_response(getPathList(db))
 
@@ -41,7 +41,7 @@ def return_path_identifiers():
 
     return response
 
-@app.route("/api/path/<pathid>", methods=["GET"])
+@app.get("/api/path/<pathid>")
 def return_path(pathid):
     response = app.make_response(getPathById(db, pathid))
 
