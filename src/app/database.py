@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-from bson.json_util import dumps
+from bson.json_util import dumps, loads
 
 def make_database_connection(connection_string):
     client = MongoClient(connection_string)
@@ -148,3 +148,8 @@ def find_path_by_id(db, path_id):
     ]
 
     return dumps(list(db.paths.aggregate(pipeline))[0])
+
+def insert_topic(db, topic):
+    result = db.topics.insert_one(loads(topic))
+
+    return dumps(db.topics.find_one(result.inserted_id, { 'id': { "$toString": '$_id' }, 'name': 1, '_id': 0 }))
