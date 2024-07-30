@@ -152,4 +152,24 @@ def getPathById(db, path_id):
 def postTopic(db, topic):
     result = db.topics.insert_one(loads(topic))
 
-    return dumps(db.topics.find_one(result.inserted_id, { 'id': { "$toString": '$_id' }, 'name': 1, '_id': 0 }))
+    pipeline = [
+            {
+                "$match": {
+                    '_id': result.inserted_id
+                }
+            },
+            {
+                "$set": {
+                    "id": {
+                        "$toString": "_id"
+                        }
+                    }
+                },
+            {
+                "$project": {
+                    "_id": 0
+                }
+            }
+    ]
+
+    return dumps(list(db.topics.aggregate(pipeline))[0])
