@@ -1,0 +1,76 @@
+version: "1.0"
+name: Topic API Check
+env:
+  host: mentorhub-topic-api
+  port: 8086
+tests:
+  topic-get-ids:
+    steps:
+      - name: GET request
+        http:
+          url: http://${{env.host}}:${{env.port}}/api/topic
+          method: GET
+          check:
+            status: /200/
+            schema:
+              type: array
+              items:
+                $ref: "docs/openapi.yaml#/components/schemas/TopicIdentifiers"
+
+  topic-get:
+    steps:
+      - name: GET request
+        http:
+          url: http://${{env.host}}:${{env.port}}/api/topic/aaaa00000000000000000002
+          method: GET
+          check:
+            status: /200/
+            schema:
+              $ref: "docs/openapi.yaml#/components/schemas/Topic"
+              required:
+                - name
+                - id
+
+  topic-post:
+    steps:
+      - name: POST request
+        http:
+          url: http://${{env.host}}:${{env.port}}/api/topic
+          method: POST
+          headers:
+            Content-Type: application/json
+          json:
+            name: New Topic
+            description: Topic description
+          check:
+            status: /200/
+            jsonpath:
+              $.name: "New Topic"
+              $.description: "Topic description"
+
+  path-get-ids:
+    steps:
+      - name: GET request
+        http:
+          url: http://${{env.host}}:${{env.port}}/api/path
+          method: GET
+          check:
+            status: /200/
+            schema:
+              type: array
+              items:
+                $ref: "docs/openapi.yaml#/components/schemas/PathIdentifiers"
+
+  path-get:
+    steps:
+      - name: GET request
+        http:
+          url: http://${{env.host}}:${{env.port}}/api/path/999900000000000000000000
+          method: GET
+          check:
+            status: /200/
+            schema:
+              $ref: "docs/openapi.yaml#/components/schemas/Path"
+              required:
+                - name
+                - id
