@@ -1,6 +1,7 @@
 from flask import Flask, request
 from database import *
 import os
+import pymongo.errors
 
 app = Flask(__name__)
 
@@ -8,6 +9,11 @@ db = make_database_connection(os.getenv('CONNECTION_STRING', 'mongodb://root:exa
 
 def hello_world(**kwargs):
     return "Hello, World!"
+
+@app.errorhandler(pymongo.errors.WriteError)
+def write_error_handler(error):
+    app.logger.error(error)
+    return "Write Error Occured", 500
 
 @app.get("/api/topic")
 def get_topics():
