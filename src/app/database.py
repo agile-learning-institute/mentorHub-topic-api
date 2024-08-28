@@ -2,12 +2,12 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 from bson.json_util import dumps
 
-def makeDatabaseConnection(connection_string):
+def make_database_connection(connection_string):
     client = MongoClient(connection_string)
 
     return client.mentorHub
 
-def getTopicById(db, topic_id):
+def find_topic_by_id(db, topic_id):
     pipeline = [
             { "$match": { '_id': ObjectId(topic_id) } },
             {
@@ -88,13 +88,13 @@ def getTopicById(db, topic_id):
 
     return dumps(list(db.topics.aggregate(pipeline))[0])
 
-def getTopicList(db):
+def find_topics(db):
     return dumps(list(db.topics.find({}, { 'id': { "$toString": '$_id' }, 'name': 1, '_id': 0 })))
 
-def getPathList(db):
+def find_paths(db):
     return dumps(list(db.paths.find({}, { 'id': { "$toString": '$_id' }, 'name': 1, '_id': 0 })))
 
-def getPathById(db, path_id):
+def find_path_by_id(db, path_id):
     pipeline = [
         { "$match": { '_id': ObjectId(path_id) } },
         {

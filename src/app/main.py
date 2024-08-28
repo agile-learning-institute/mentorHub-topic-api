@@ -4,38 +4,38 @@ import os
 
 app = Flask(__name__)
 
-db = makeDatabaseConnection(os.getenv('CONNECTION_STRING', 'mongodb://root:example@mentorhub-mongodb:27017/?tls=false&directConnection=true'))
+db = make_database_connection(os.getenv('CONNECTION_STRING', 'mongodb://root:example@mentorhub-mongodb:27017/?tls=false&directConnection=true'))
 
 def hello_world(**kwargs):
     return "Hello, World!"
 
 @app.route("/api/topic", methods=["GET"])
-def return_topic_identifiers():
-    response = app.make_response(getTopicList(db))
+def get_topics():
+    response = app.make_response(find_topics(db))
 
     response.content_type = 'application/json'
 
     return response
 
 @app.route("/api/topic/<topicid>", methods=["GET"])
-def return_topic(topicid):
-    response = app.make_response(getTopicById(db, topicid))
+def get_topic_by_id(topicid):
+    response = app.make_response(find_topic_by_id(db, topicid))
 
     response.content_type = 'application/json'
 
     return response
 
 @app.route("/api/path", methods=["GET"])
-def return_path_identifiers():
-    response = app.make_response(getPathList(db))
+def get_paths():
+    response = app.make_response(find_paths(db))
 
     response.content_type = 'application/json'
 
     return response
 
 @app.route("/api/path/<pathid>", methods=["GET"])
-def return_path(pathid):
-    response = app.make_response(getPathById(db, pathid))
+def get_path_by_id(pathid):
+    response = app.make_response(find_path_by_id(db, pathid))
 
     response.content_type = 'application/json'
 
