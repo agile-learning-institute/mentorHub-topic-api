@@ -29,7 +29,7 @@ tests:
               $ref: "docs/openapi.yaml#/components/schemas/Topic"
               required:
                 - name
-                - id
+                - _id
 
   topic-post:
     steps:
@@ -73,4 +73,4 @@ tests:
               $ref: "docs/openapi.yaml#/components/schemas/Path"
               required:
                 - name
-                - id
+                - _id

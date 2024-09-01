@@ -1,11 +1,18 @@
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-from bson.json_util import dumps, loads
+from bson.json_util import loads
+import json
+import datetime
 
 def make_database_connection(connection_string):
     client = MongoClient(connection_string)
 
     return client.mentorHub
+
+class MongoJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, (ObjectId, datetime.datetime)):
+            return str(obj)
 
 def find_topic_by_id(db, topic_id):
     pipeline = [
@@ -36,21 +43,12 @@ def find_topic_by_id(db, topic_id):
             },
             {
                 "$set": {
-                    "id": {
-                        "$toString": '$_id'
-                    }
-                }
-            },
-            {
-                "$set": {
                     "resources": {
                         "$map": {
                             "input": '$resources',
                             "as": 'resource',
                             "in": {
-                                "id": {
-                                    "$toString": '$$resource._id'
-                                },
+                                "_id": '$$resource._id',
                                 "name": '$$resource.name',
                                 "status": '$$resource.status',
                                 "description": '$$resource.description',
@@ -77,7 +75,6 @@ def find_topic_by_id(db, topic_id):
                 },
             {
                 "$project": {
-                    '_id': 0,
                     'lastSaved': 0,
                     'resources_skills': 0,
                     'skills.lastSaved': 0,
@@ -86,13 +83,13 @@ def find_topic_by_id(db, topic_id):
             }
     ]
 
-    return dumps(list(db.topics.aggregate(pipeline))[0])
+    return json.dumps(list(db.topics.aggregate(pipeline))[0], cls=MongoJSONEncoder)
 
 def find_topics(db):
-    return dumps(list(db.topics.find({}, { 'id': { "$toString": '$_id' }, 'name': 1, '_id': 0 })))
+    return json.dumps(list(db.topics.find({}, { '_id': 1, 'name': 1 })), cls=MongoJSONEncoder)
 
 def find_paths(db):
-    return dumps(list(db.paths.find({}, { 'id': { "$toString": '$_id' }, 'name': 1, '_id': 0 })))
+    return json.dumps(list(db.paths.find({}, { '_id': 1, 'name': 1 })), cls=MongoJSONEncoder)
 
 def find_path_by_id(db, path_id):
     pipeline = [
@@ -103,13 +100,6 @@ def find_path_by_id(db, path_id):
                 "localField": 'segments.topics',
                 "foreignField": '_id',
                 "as": 'topics'
-            }
-        },
-        {
-            "$set": {
-                "id": {
-                    "$toString": '$_id'
-                }
             }
         },
         {
@@ -141,35 +131,14 @@ def find_path_by_id(db, path_id):
         },
         {
             "$project": {
-                '_id': 0,
                 'topics': 0
             }
         }
     ]
 
-    return dumps(list(db.paths.aggregate(pipeline))[0])
+    return json.dumps(list(db.paths.aggregate(pipeline))[0], cls=MongoJSONEncoder)
 
 def insert_topic(db, topic):
     result = db.topics.insert_one(loads(topic))
 
-    pipeline = [
-            {
-                "$match": {
-                    '_id': result.inserted_id
-                }
-            },
-            {
-                "$set": {
-                    "id": {
-                        "$toString": "_id"
-                        }
-                    }
-                },
-            {
-                "$project": {
-                    "_id": 0
-                }
-            }
-    ]
-
-    return dumps(list(db.topics.aggregate(pipeline))[0])
+    return json.dumps(list(db.topics.find_one({ '_id': result.inserted_id }))[0], cls=MongoJSONEncoder)
