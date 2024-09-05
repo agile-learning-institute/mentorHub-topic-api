@@ -1,11 +1,13 @@
-from flask import Flask
-from wsgiref.simple_server import make_server
-import routes
-from database import mongo_io
-import pymongo.errors
+import os
 import signal
 import sys
-import os
+from wsgiref.simple_server import make_server
+
+import pymongo.errors
+from flask import Flask
+
+import routes
+from database import mongo_io
 
 app = Flask(__name__)
 
