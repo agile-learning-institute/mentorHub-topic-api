@@ -25,27 +25,9 @@ def get_topic_by_id(topicid):
 
     return response
 
-@app.route("/api/path", methods=["GET"])
-def get_paths():
-    response = app.make_response(find_paths(db))
-
-    response.content_type = 'application/json'
-
-    return response
-
-@app.route("/api/path/<pathid>", methods=["GET"])
-def get_path_by_id(pathid):
-    response = app.make_response(find_path_by_id(db, pathid))
-
-    response.content_type = 'application/json'
-
-    return response
-
 app.add_url_rule("/api/topic", methods=["POST"], view_func=hello_world)
 app.add_url_rule("/api/topic/<topicid>", methods=["PATCH"], view_func=hello_world)
 app.add_url_rule("/api/topic/<topicid>/resource", methods=["POST"], view_func=hello_world)
 app.add_url_rule("/api/topic/<topicid>/resource/<resourceid>", methods=["PATCH","DELETE"], view_func=hello_world)
-app.add_url_rule("/api/path", methods=["POST"], view_func=hello_world)
-app.add_url_rule("/api/path/<pathid>", methods=["PATCH"], view_func=hello_world)
 app.add_url_rule("/api/health", methods=["GET"], view_func=hello_world)
 app.add_url_rule("/api/config", methods=["GET"], view_func=hello_world)
