@@ -1,30 +1,57 @@
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-from bson.json_util import dumps
+from bson.json_util import loads
+import os
+import json
+import datetime
 
-def make_database_connection(connection_string):
-    client = MongoClient(connection_string)
+class MongoJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, (ObjectId, datetime.datetime)):
+            return str(obj)
 
-    return client.mentorHub
+class Collections:
 
-def find_topic_by_id(db, topic_id):
-    pipeline = [
-            { "$match": { '_id': ObjectId(topic_id) } },
-            {
-                "$set": {
-                    "id": {
-                        "$toString": '$_id'
+    TOPICS = 'topics'
+
+class MongoIO:
+
+    def __init__(self):
+        self.db = self._make_database_connection()
+
+    def _make_database_connection(self):
+        connection_string = os.getenv('CONNECTION_STRING', 'mongodb://root:example@mentorhub-mongodb:27017/?tls=false&directConnection=true')
+
+        client = MongoClient(connection_string)
+
+        return client.mentorHub
+
+    def find_one(self, collection, id):
+        if collection == Collections.TOPICS:
+            pipeline = [
+                    { "$match": { '_id': ObjectId(topic_id) } },
+                    {
+                        "$set": {
+                            "id": {
+                                "$toString": '$_id'
+                            }
+                        }
+                    },
+                    {
+                        "$project": {
+                            '_id': 0
+                        }
                     }
-                }
-            },
-            {
-                "$project": {
-                    '_id': 0,
-                }
-            }
-    ]
+            ]
 
-    return dumps(list(db.topics.aggregate(pipeline))[0])
+            result = self.db[collection].aggregate(pipeline)
 
-def find_topics(db):
-    return dumps(list(db.topics.find({}, { 'id': { "$toString": '$_id' }, 'name': 1, '_id': 0 })))
+        return json.dumps(list(result)[0], cls=MongoJSONEncoder)
+
+    def find_all(self, collection):
+        return json.dumps(list(self.db[collection].find({}, { '_id': 1, 'name': 1 })), cls=MongoJSONEncoder)
+
+    def close(self):
+        self.db.close()
+
+mongo_io = MongoIO()
