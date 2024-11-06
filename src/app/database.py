@@ -51,6 +51,11 @@ class MongoIO:
     def find_all(self, collection):
         return json.dumps(list(self.db[collection].find({}, { '_id': 1, 'name': 1 })), cls=MongoJSONEncoder)
 
+    def insert_one(self, collection, data):
+        result = self.db[collection].insert_one(loads(data))
+
+        return json.dumps(self.db[collection].find_one({ '_id': result.inserted_id }), cls=MongoJSONEncoder)
+
     def close(self):
         self.db.close()
 

@@ -14,6 +14,10 @@ def set_content_type(response):
 def get_topics():
     return make_response(mongo_io.find_all(Collections.TOPICS))
 
+@topic_routes.post("/api/topic")
+def post_topic():
+    return make_response(mongo_io.insert_one(Collections.TOPICS, request.data))
+
 @topic_routes.get("/api/topic/<topicid>")
 def get_topic_by_id(topicid):
     return make_response(mongo_io.find_one(Collections.TOPICS, topicid))
