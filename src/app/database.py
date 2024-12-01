@@ -30,7 +30,7 @@ class MongoIO:
     def find_one(self, collection, id):
         if collection == Collections.TOPICS:
             pipeline = [
-                    { "$match": { '_id': ObjectId(topic_id) } },
+                    { "$match": { '_id': ObjectId(id) } },
                     {
                         "$set": {
                             "id": {
