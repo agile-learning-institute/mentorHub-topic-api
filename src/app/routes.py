@@ -1,5 +1,6 @@
 from flask import Blueprint, make_response, request
 
+from auth import authorize
 from database import Collections, mongo_io
 
 topic_routes = Blueprint('topic_routes', __name__)
@@ -11,13 +12,16 @@ def set_content_type(response):
     return response
 
 @topic_routes.get("/api/topic")
+@authorize
 def get_topics():
     return make_response(mongo_io.find_all(Collections.TOPICS))
 
 @topic_routes.post("/api/topic")
+@authorize
 def post_topic():
     return make_response(mongo_io.insert_one(Collections.TOPICS, request.data))
 
 @topic_routes.get("/api/topic/<topicid>")
+@authorize
 def get_topic_by_id(topicid):
     return make_response(mongo_io.find_one(Collections.TOPICS, topicid))

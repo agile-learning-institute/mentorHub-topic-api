@@ -7,6 +7,7 @@ name = "mentorhub-topic-api"
 version = "0.1.0"
 dependencies = [
 	"flask",
+	"joserfc",
 	"pymongo",
 	"pyinstaller"
 ]

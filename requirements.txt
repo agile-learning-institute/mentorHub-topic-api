@@ -8,8 +8,12 @@ altgraph==0.17.4
     # via pyinstaller
 blinker==1.7.0
     # via flask
+cffi==1.17.1
+    # via cryptography
 click==8.1.7
     # via flask
+cryptography==43.0.3
+    # via joserfc
 dnspython==2.6.1
     # via pymongo
 flask==3.0.2
@@ -18,6 +22,8 @@ itsdangerous==2.1.2
     # via flask
 jinja2==3.1.3
     # via flask
+joserfc==1.0.0
+    # via mentorhub-topic-api (pyproject.toml)
 markupsafe==2.1.5
     # via
     #   jinja2
@@ -26,6 +32,8 @@ packaging==24.1
     # via
     #   pyinstaller
     #   pyinstaller-hooks-contrib
+pycparser==2.22
+    # via cffi
 pyinstaller==6.8.0
     # via mentorhub-topic-api (pyproject.toml)
 pyinstaller-hooks-contrib==2024.7
