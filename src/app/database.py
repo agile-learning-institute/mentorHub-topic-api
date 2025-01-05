@@ -21,7 +21,7 @@ class MongoIO:
         self.db = self._make_database_connection()
 
     def _make_database_connection(self):
-        connection_string = os.getenv('CONNECTION_STRING', 'mongodb://root:example@mentorhub-mongodb:27017/?tls=false&directConnection=true')
+        connection_string = os.getenv('CONNECTION_STRING', 'mongodb://mongodb:27017/?replicaSet=rs0')
 
         client = MongoClient(connection_string)
 
